@@ -354,6 +354,111 @@ while condition:
 | `continue` | **跳过本次**，进入下一次循环 | 当前数据不需要处理，直接看下一个            |
 | `else`     | **循环正常结束**后执行       | 如果循环被 `break` 打断，则不执行 `else` 块 |
 
+### 12. 函数 (Functions)
+
+- **代码文件**: [12_functions.py](12_functions.py)
+
+#### 12.1 核心概念
+
+函数是组织好的、可重复使用的代码块。你可以把它想象成一个黑盒子：你给它输入（参数），它给你输出（返回值）。
+
+![Function Flow](assets/function_flow.png)
+
+- **定义**: 使用 `def` 关键字。
+- **调用**: 使用函数名加括号 `func_name()`。
+- **文档字符串**: 函数定义下的第一行字符串，用于说明函数功能。
+
+```python
+# 定义函数
+def say_hello():
+    """这是一个简单的问候函数"""
+    print("Hello, Python!")
+
+# 调用函数
+say_hello()
+```
+
+#### 12.2 参数与返回值
+
+| 类型           | 描述                              | 示例               |
+| :------------- | :-------------------------------- | :----------------- |
+| **位置参数**   | 最常见的参数，必须按顺序传        | `func(1, 2)`       |
+| **关键字参数** | 指定参数名，顺序不重要            | `func(b=2, a=1)`   |
+| **默认参数**   | 如果不传则使用默认值              | `def func(a=1):`   |
+| **可变参数**   | `*args` (元组), `**kwargs` (字典) | `def func(*args):` |
+| **返回值**     | 使用 `return` 返回结果            | `return result`    |
+
+**示例代码：**
+
+```python
+# 1. 基础参数与返回值
+def add(a, b):
+    return a + b
+
+result = add(3, 5)  # result = 8
+
+# 2. 默认参数
+def greet(name, msg="你好"):
+    print(f"{msg}, {name}")
+
+greet("Alice")          # 输出: 你好, Alice
+greet("Bob", "Hello")   # 输出: Hello, Bob
+
+# 3. 可变参数 (*args) - 接收任意数量的位置参数
+def sum_all(*numbers):
+    total = 0
+    for num in numbers:
+        total += num
+    return total
+
+print(sum_all(1, 2, 3))  # 输出: 6
+```
+
+#### 12.3 返回值详解 (Return Values)
+
+`return` 语句用于退出函数并返回结果。
+
+- **隐式返回 None**: 如果函数没有 `return` 语句，或者 `return` 后面什么都不写，它默认返回 `None`。
+- **提前结束 (Early Return)**: 一旦执行到 `return`，函数**立即停止**，后面的代码**不会执行**。
+
+```python
+# 1. 没有 return 的函数
+def no_return():
+    print("Doing something...")
+
+result = no_return()
+print(result)  # 输出: None
+
+# 2. return 提前结束
+def check_positive(number):
+    if number <= 0:
+        return "无效数字"  # 遇到 return 立即结束
+
+    print("正在计算...")   # 只有 number > 0 才会执行到这里
+    return number * 2
+
+print(check_positive(-5)) # 输出: 无效数字 (print不会执行)
+print(check_positive(10)) # 输出: 正在计算... 20
+```
+
+#### 12.4 变量作用域 (Scope)
+
+- **全局变量 (Global)**: 在函数外部定义，所有地方都能读。
+- **局部变量 (Local)**: 在函数内部定义，只有函数内部能用。
+- **注意**: 在函数内修改全局变量需要使用 `global` 关键字。
+
+```python
+x = 100  # 全局变量
+
+def func():
+    y = 10   # 局部变量
+    print(x) # 可以读取全局变量
+    # print(y) # 正常
+
+func()
+# print(y) # 报错！y 在函数外不存在
+```
+
 ## 示例
 
 - [hello.py](hello.py): 环境测试脚本
