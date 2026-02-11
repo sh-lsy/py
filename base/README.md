@@ -459,6 +459,93 @@ func()
 # print(y) # 报错！y 在函数外不存在
 ```
 
+### 13. 实战：学员管理系统 (Student Management System)
+
+- **代码文件**: [13_student_management_system.py](13_student_management_system.py)
+
+#### 13.1 项目简介
+
+这是一个基础友好的实战项目 —— 用 **函数 + 循环 + 字典/列表**，打造能实现“添加、删除、修改、查询、显示所有、退出”的学员管理系统。全程拆解每一步逻辑，代码带详细注释，跟着做就能掌握函数调用、数据存储、循环控制的核心用法，还能直接复用成品系统！
+
+#### 13.2 系统流程图
+
+![System Flow](assets/system_flow.png)
+
+#### 13.3 功能清单
+
+1.  **添加学员**: 自动生成唯一的 4 位学号，录入姓名和手机号。
+2.  **删除学员**: 根据学号查找并删除，带二次确认。
+3.  **编辑学员**: 修改姓名或手机号，支持回车跳过不修改。
+4.  **查询学员**: 根据学号精确查询。
+5.  **显示所有**: 以表格形式列出所有学员信息。
+6.  **退出系统**: 安全退出循环。
+
+#### 13.4 核心代码逻辑 (Core Logic)
+
+```python
+# 数据结构设计：使用列表存储字典
+students = [
+    {'id': '1001', 'name': '张三', 'phone': '138...'},
+    {'id': '1002', 'name': '李四', 'phone': '139...'}
+]
+
+# 主循环逻辑
+def main():
+    while True:
+        print_menu()
+        choice = input("请选择: ")
+        if choice == '1':
+            add_student()
+        # ... 其他功能 ...
+        elif choice == '6':
+            break
+```
+
+### 14. 异常处理 (Exception Handling)
+
+- **代码文件**: [14_exceptions.py](14_exceptions.py)
+
+#### 14.1 什么是异常？
+
+异常 (Exception) 是程序运行过程中发生的错误。如果不处理，程序会直接崩溃。使用 `try-except` 结构可以让我们优雅地处理这些错误，防止程序闪退。
+
+#### 14.2 处理流程图
+
+![Exception Flow](assets/exception_flow.png)
+
+#### 14.3 核心关键字
+
+| 关键字      | 说明                                  | 示例场景                                 |
+| :---------- | :------------------------------------ | :--------------------------------------- |
+| **try**     | 尝试运行可能出错的代码                | `result = 10 / 0`                        |
+| **except**  | 捕获特定类型的错误并处理              | 捕获 `ZeroDivisionError` 提示“不能除以0” |
+| **else**    | 如果 `try` 块**没有**出错，则执行此块 | 打印计算成功的结果                       |
+| **finally** | **无论是否出错**，最后一定会执行      | 关闭文件、断开数据库连接                 |
+| **raise**   | 主动抛出一个异常                      | 年龄输入负数时，主动报错                 |
+
+#### 14.4 常见代码结构
+
+```python
+try:
+    # 可能出错的代码
+    f = open('data.txt', 'r')
+    content = f.read()
+except FileNotFoundError:
+    # 发生特定错误时执行
+    print("文件没找到！")
+except Exception as e:
+    # 发生其他未知错误时执行
+    print(f"未知错误: {e}")
+else:
+    # 没出错时执行
+    print("读取成功")
+finally:
+    # 总是执行
+    if 'f' in locals():
+        f.close()
+    print("操作结束")
+```
+
 ## 示例
 
 - [hello.py](hello.py): 环境测试脚本

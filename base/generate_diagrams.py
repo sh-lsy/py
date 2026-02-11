@@ -76,10 +76,109 @@ def create_function_diagram():
     plt.savefig(output_path, dpi=100)
     print(f"Image saved to: {output_path}")
 
+def create_system_flow_diagram():
+    """生成学员管理系统流程图"""
+    plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'Arial']
+    plt.rcParams['axes.unicode_minus'] = False
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 8)
+    ax.axis('off')
+
+    # 定义盒子样式
+    bbox_props = dict(boxstyle="round,pad=0.5", fc="white", ec="black", lw=2)
+    bbox_start = dict(boxstyle="round,pad=0.5", fc="#90EE90", ec="black", lw=2)
+    bbox_decision = dict(boxstyle="round4,pad=0.5", fc="#FFEB3B", ec="black", lw=2)
+
+    # 1. 开始
+    ax.text(5, 7, "Start\n(开始)", ha='center', va='center', fontsize=12, bbox=bbox_start)
+    ax.arrow(5, 6.5, 0, -0.8, head_width=0.1, head_length=0.1, fc='black', ec='black')
+
+    # 2. 显示菜单
+    ax.text(5, 5.2, "Show Menu\n(显示菜单)", ha='center', va='center', fontsize=12, bbox=bbox_props)
+    ax.arrow(5, 4.7, 0, -0.8, head_width=0.1, head_length=0.1, fc='black', ec='black')
+
+    # 3. 用户输入
+    ax.text(5, 3.4, "User Input\n(用户选择)", ha='center', va='center', fontsize=12, bbox=bbox_decision)
+
+    # 4. 分支箭头
+    # 左侧分支 (功能)
+    ax.arrow(3.5, 3.4, -2, 0, head_width=0.1, head_length=0.1, fc='black', ec='black')
+    ax.text(1.5, 3.8, "1-5", ha='center', va='center', fontsize=10)
+    ax.text(0.5, 3.4, "执行对应\n功能函数", ha='center', va='center', fontsize=12, bbox=bbox_props)
+    
+    # 回环箭头 (功能 -> 菜单)
+    ax.arrow(0.5, 3.9, 0, 1.8, head_width=0, head_length=0, fc='black', ec='black')
+    ax.arrow(0.5, 5.7, 3.5, 0, head_width=0.1, head_length=0.1, fc='black', ec='black')
+
+    # 右侧分支 (退出)
+    ax.arrow(6.5, 3.4, 2, 0, head_width=0.1, head_length=0.1, fc='black', ec='black')
+    ax.text(7.5, 3.8, "6 (Exit)", ha='center', va='center', fontsize=10)
+    ax.text(9.5, 3.4, "End\n(结束)", ha='center', va='center', fontsize=12, bbox=bbox_start)
+
+    plt.title("学员管理系统运行流程", fontsize=16)
+    plt.tight_layout()
+
+    # 保存图片
+    output_path = os.path.join(os.path.dirname(__file__), 'assets', 'system_flow.png')
+    plt.savefig(output_path, dpi=100)
+    print(f"Image saved to: {output_path}")
+
+def create_exception_diagram():
+    """生成异常处理流程图"""
+    plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'Arial']
+    plt.rcParams['axes.unicode_minus'] = False
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 8)
+    ax.axis('off')
+
+    bbox_rect = dict(boxstyle="round,pad=0.5", fc="white", ec="black", lw=2)
+    bbox_diamond = dict(boxstyle="round4,pad=0.5", fc="#FFEB3B", ec="black", lw=2)
+    bbox_green = dict(boxstyle="round,pad=0.5", fc="#90EE90", ec="black", lw=2)
+    bbox_red = dict(boxstyle="round,pad=0.5", fc="#FFCCCB", ec="black", lw=2)
+
+    # 1. try 块
+    ax.text(5, 7, "try:\n运行代码", ha='center', va='center', fontsize=12, bbox=bbox_rect)
+    ax.arrow(5, 6.5, 0, -0.8, head_width=0.1, head_length=0.1, fc='black', ec='black')
+
+    # 2. 判断是否有异常
+    ax.text(5, 5.2, "Has Error?\n(是否出错)", ha='center', va='center', fontsize=12, bbox=bbox_diamond)
+
+    # 3. 分支
+    # Yes (出错) -> except
+    ax.arrow(6.5, 5.2, 1.5, 0, head_width=0.1, head_length=0.1, fc='red', ec='red')
+    ax.text(7, 5.4, "Yes", color='red')
+    ax.text(8.5, 4, "except:\n捕获异常", ha='center', va='center', fontsize=12, bbox=bbox_red)
+
+    # No (没出错) -> else
+    ax.arrow(3.5, 5.2, -1.5, 0, head_width=0.1, head_length=0.1, fc='green', ec='green')
+    ax.text(3, 5.4, "No", color='green')
+    ax.text(1.5, 4, "else:\n顺利执行", ha='center', va='center', fontsize=12, bbox=bbox_green)
+
+    # 4. finally
+    ax.arrow(1.5, 3.5, 2.5, -1.3, head_width=0.1, head_length=0.1, fc='black', ec='black') # else -> finally
+    ax.arrow(8.5, 3.5, -2.5, -1.3, head_width=0.1, head_length=0.1, fc='black', ec='black') # except -> finally
+    
+    ax.text(5, 1.5, "finally:\n清理工作\n(总是执行)", ha='center', va='center', fontsize=12, bbox=bbox_rect)
+
+    plt.title("异常处理 (try-except) 流程", fontsize=16)
+    plt.tight_layout()
+
+    output_path = os.path.join(os.path.dirname(__file__), 'assets', 'exception_flow.png')
+    plt.savefig(output_path, dpi=100)
+    print(f"Image saved to: {output_path}")
+
 if __name__ == "__main__":
     try:
-        create_string_index_diagram()
-        create_function_diagram()
+        # 暂时注释掉，避免重复生成图片
+        # create_string_index_diagram()  # 生成字符串索引示意图 (配合字符串/列表章节)
+        # create_function_diagram()      # 生成函数工作原理图 (配合 12_functions.py)
+        # create_system_flow_diagram()   # 生成学员管理系统流程图 (配合 13_student_management_system.py)
+        # create_exception_diagram()     # 生成异常处理流程图 (配合 14_exceptions.py)
+        print("Skipping diagram generation (commented out).")
     except ImportError:
         print("matplotlib not installed. Skipping image generation.")
     except Exception as e:
