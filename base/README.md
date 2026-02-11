@@ -546,6 +546,147 @@ finally:
     print("操作结束")
 ```
 
+### 15. 模块 (Modules)
+
+- **代码文件**: [15_modules.py](15_modules.py)
+- **辅助模块**: [my_utils.py](my_utils.py)
+
+#### 15.1 什么是模块？
+
+模块 (Module) 就是一个 `.py` 文件。我们可以导入 (import) 别人写好的模块（标准库），也可以导入自己写的模块。使用模块可以极大地提高代码的复用性。
+
+#### 15.2 模块分类
+
+| 类型           | 说明                                | 示例                           |
+| :------------- | :---------------------------------- | :----------------------------- |
+| **内置模块**   | Python 安装自带，无需安装，直接导入 | `math`, `random`, `os`, `time` |
+| **第三方模块** | 社区开发，需要用 `pip install` 安装 | `requests`, `pandas`, `numpy`  |
+| **自定义模块** | 我们自己编写的 `.py` 文件           | `my_utils.py`                  |
+
+#### 15.3 导入关系示意图
+
+![Module Flow](assets/module_flow.png)
+
+#### 15.4 导入方式详解
+
+1.  **直接导入 (import ...)**
+    - **适用**: 导入整个模块，使用时必须带前缀。
+
+    ```python
+    import math
+    print(math.sqrt(16))  # 必须写 math.
+    ```
+
+2.  **导入特定功能 (from ... import ...)**
+    - **适用**: 只想用模块里的某几个函数，不想写前缀。
+
+    ```python
+    from random import randint
+    print(randint(1, 10)) # 不需要写 random.
+    ```
+
+3.  **起别名 (import ... as ...)**
+    - **适用**: 模块名太长，或者跟现有变量名冲突。
+
+    ```python
+    import datetime as dt
+    print(dt.datetime.now())
+    ```
+
+4.  **导入所有 (from ... import \*) - ⚠️ 慎用**
+    - **风险**: 会把模块里所有东西都倒进来，容易覆盖掉你自己定义的变量。
+    ```python
+    from math import *
+    # 如果你也定义了一个 sqrt 函数，就会冲突！
+    ```
+
+#### 15.5 避坑指南 (Pitfalls)
+
+> ⚠️ **千万不要给自己写的文件起名为 `math.py`, `random.py`, `socket.py` 等！**
+
+如果你创建了一个 `random.py`，当你写 `import random` 时，Python 会优先导入**你的**文件，而不是系统的标准库，这会导致各种莫名其妙的报错（比如 `AttributeError: module 'random' has no attribute 'randint'`）。
+
+#### 15.6 `if __name__ == "__main__":` 的作用
+
+这是一个非常经典的 Python 面试题，也是写模块时的必知技巧。
+
+- **直接运行**文件时：`__name__` 的值是 `"__main__"`。
+- **被导入**时：`__name__` 的值是模块的名字（如 `"my_utils"`）。
+
+所以，放在 `if __name__ == "__main__":` 下面的代码，只有在**直接运行该文件**时才会执行，**被导入时不会执行**（通常用于测试）。
+
+### 16. 包 (Packages)
+
+- **代码文件**: [16_packages.py](16_packages.py)
+- **包目录**: [my_package](my_package/)
+
+#### 16.1 什么是包？
+
+包 (Package) 本质上就是一个包含 `__init__.py` 文件的**文件夹**。它用于将多个相关的模块组织在一起，形成一个层级结构。
+
+**结构示例**:
+
+```text
+my_package/              <-- 这是一个包
+    ├── __init__.py      <-- 必须有！(Python 3.3+ 虽不强制但推荐保留)
+    ├── math_tools.py    <-- 子模块 1
+    └── str_tools.py     <-- 子模块 2
+```
+
+#### 16.2 包结构示意图
+
+![Package Structure](assets/package_structure.png)
+
+#### 16.3 `__init__.py` 的作用
+
+它是包的**入口**和**配置中心**。
+
+| 作用         | 说明                                                  | 代码示例                      |
+| :----------- | :---------------------------------------------------- | :---------------------------- |
+| **标识**     | 告诉 Python 这个文件夹是一个包                        | (空文件即可)                  |
+| **初始化**   | 导入包时会自动运行的代码                              | `print("Package loading...")` |
+| **简化导入** | 暴露内部模块的功能，方便用户调用                      | `from .math_tools import add` |
+| **暴露模块** | 将子模块暴露给包，让用户可以用 `pkg.mod` 调用         | `from . import calc`          |
+| **控制导出** | `__all__` 列表控制 `from package import *` 导入的内容 | `__all__ = ['add', 'calc']`   |
+
+#### 16.4 常见导入方式
+
+假设我们想用 `my_package` 里的 `add` 函数（在 `math_tools.py` 中），或者 `calc` 模块：
+
+1.  **路径导入 (最长)**:
+
+    ```python
+    import my_package.math_tools
+    my_package.math_tools.add(1, 2)
+    ```
+
+2.  **模块导入 (常用)**:
+
+    ```python
+    from my_package import math_tools
+    math_tools.add(1, 2)
+    ```
+
+3.  **函数导入 (最简)**:
+
+    ```python
+    from my_package.math_tools import add
+    add(1, 2)
+    ```
+
+4.  **利用 `__init__.py` (高级)**:
+    - **导入函数**: 如果 `__init__.py` 写了 `from .math_tools import add`
+      ```python
+      from my_package import add
+      add(1, 2)
+      ```
+    - **导入模块**: 如果 `__init__.py` 写了 `from . import calc`
+      ```python
+      import my_package
+      # 此时 my_package.calc 已经被自动挂载了
+      my_package.calc.multiply(3, 4)
+      ```
+
 ## 示例
 
 - [hello.py](hello.py): 环境测试脚本

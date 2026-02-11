@@ -171,6 +171,98 @@ def create_exception_diagram():
     plt.savefig(output_path, dpi=100)
     print(f"Image saved to: {output_path}")
 
+def create_module_diagram():
+    """生成模块导入关系图"""
+    plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'Arial']
+    plt.rcParams['axes.unicode_minus'] = False
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 6)
+    ax.axis('off')
+
+    bbox_main = dict(boxstyle="round,pad=0.5", fc="#ADD8E6", ec="black", lw=2)
+    bbox_module = dict(boxstyle="round,pad=0.5", fc="#FFD700", ec="black", lw=2)
+    bbox_lib = dict(boxstyle="round,pad=0.5", fc="#90EE90", ec="black", lw=2)
+
+    # Main Script
+    ax.text(5, 4.5, "main.py\n(主程序)", ha='center', va='center', fontsize=14, bbox=bbox_main)
+
+    # Standard Lib
+    ax.text(2, 1.5, "math / random\n(Python 标准库)", ha='center', va='center', fontsize=12, bbox=bbox_lib)
+    
+    # Custom Module
+    ax.text(8, 1.5, "my_utils.py\n(自定义模块)", ha='center', va='center', fontsize=12, bbox=bbox_module)
+
+    # Arrows
+    ax.annotate("", xy=(5, 4), xytext=(2, 2.2), arrowprops=dict(arrowstyle="<-", lw=2, color='gray'))
+    ax.text(2.8, 3.2, "import math", rotation=35, color='gray', fontsize=10)
+
+    ax.annotate("", xy=(5, 4), xytext=(8, 2.2), arrowprops=dict(arrowstyle="<-", lw=2, color='gray'))
+    ax.text(6.5, 3.2, "import my_utils", rotation=-35, color='gray', fontsize=10)
+
+    # Explanation
+    ax.text(5, 0.5, "模块就像工具箱，主程序按需导入使用", ha='center', va='center', fontsize=12, style='italic')
+
+    plt.title("模块导入关系示意图", fontsize=16)
+    plt.tight_layout()
+
+    output_path = os.path.join(os.path.dirname(__file__), 'assets', 'module_flow.png')
+    plt.savefig(output_path, dpi=100)
+    print(f"Image saved to: {output_path}")
+
+def create_package_diagram():
+    """生成包结构示意图"""
+    plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'Arial']
+    plt.rcParams['axes.unicode_minus'] = False
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 8)
+    ax.axis('off')
+
+    # 文件夹图标 (简单矩形代替)
+    bbox_folder = dict(boxstyle="square,pad=0.3", fc="#FFD700", ec="black", lw=2)
+    bbox_file = dict(boxstyle="square,pad=0.3", fc="#E0E0E0", ec="black", lw=1)
+
+    # 根目录
+    ax.text(5, 7, "my_package/ (文件夹)", ha='center', va='center', fontsize=14, bbox=bbox_folder)
+    
+    # 连接线
+    ax.plot([5, 5], [6.5, 6], color='black', lw=2)  # 竖线
+    ax.plot([2, 8], [6, 6], color='black', lw=2)    # 横线
+    
+    # 子文件连线
+    ax.plot([2, 2], [6, 5.5], color='black', lw=2)
+    ax.plot([5, 5], [6, 5.5], color='black', lw=2)
+    ax.plot([8, 8], [6, 5.5], color='black', lw=2)
+
+    # 文件
+    ax.text(2, 5, "__init__.py", ha='center', va='center', fontsize=12, bbox=bbox_file)
+    ax.text(5, 5, "math_tools.py", ha='center', va='center', fontsize=12, bbox=bbox_file)
+    ax.text(8, 5, "calc.py", ha='center', va='center', fontsize=12, bbox=bbox_file)
+
+    # 说明
+    ax.text(2, 4, "from . import calc", ha='center', va='top', fontsize=10, color='red')
+    ax.text(5, 4, "def add(x, y)", ha='center', va='top', fontsize=10, style='italic')
+    ax.text(8, 4, "def multiply(a, b)", ha='center', va='top', fontsize=10, style='italic')
+
+    # 导入示意
+    ax.text(5, 2, "Import Actions (导入行为)", ha='center', va='center', fontsize=14, weight='bold')
+    
+    ax.text(1, 1, "from my_package import calc", ha='left', va='center', fontsize=11, color='blue')
+    ax.text(5.5, 1, "--> 导入整个模块对象", ha='left', va='center', fontsize=11, color='gray')
+
+    ax.text(1, 0.5, "my_package.calc.multiply(2,3)", ha='left', va='center', fontsize=11, color='blue')
+    ax.text(5.5, 0.5, "--> 调用模块内函数", ha='left', va='center', fontsize=11, color='gray')
+
+    plt.title("Python 包 (Package) 结构示意图", fontsize=16)
+    plt.tight_layout()
+
+    output_path = os.path.join(os.path.dirname(__file__), 'assets', 'package_structure.png')
+    plt.savefig(output_path, dpi=100)
+    print(f"Image saved to: {output_path}")
+
 if __name__ == "__main__":
     try:
         # 暂时注释掉，避免重复生成图片
@@ -178,7 +270,9 @@ if __name__ == "__main__":
         # create_function_diagram()      # 生成函数工作原理图 (配合 12_functions.py)
         # create_system_flow_diagram()   # 生成学员管理系统流程图 (配合 13_student_management_system.py)
         # create_exception_diagram()     # 生成异常处理流程图 (配合 14_exceptions.py)
-        print("Skipping diagram generation (commented out).")
+        # create_module_diagram()        # 生成模块导入关系图 (配合 15_modules.py)
+        create_package_diagram()       # 生成包结构示意图 (配合 16_packages.py)
+        # print("Skipping diagram generation (commented out).")
     except ImportError:
         print("matplotlib not installed. Skipping image generation.")
     except Exception as e:
