@@ -11,11 +11,11 @@ description: '辅助 Python 学习项目，管理各个模块（基础、进阶�
 
 项目分为以下几个模块（目录）：
 
-- 📂 **`base`** (基础 Python): 变量、循环、函数等核心概念。
-- 📂 **`advanced`** (进阶 Python): 面向对象、装饰器、多线程等。
-- 📂 **`data`** (数据分析): NumPy, Pandas, Matplotlib。
-- 📂 **`crawler`** (网络爬虫): Requests, BeautifulSoup, Selenium。
-- 📂 **`practical`** (实战项目): 综合性的小工具或应用。
+- 📂 **`01_base`** (基础 Python): 变量、循环、函数等核心概念。
+- 📂 **`02_advanced`** (进阶 Python): 面向对象、装饰器、多线程等。
+- 📂 **`03_data`** (数据分析): NumPy, Pandas, Matplotlib。
+- 📂 **`04_crawler`** (网络爬虫): Requests, BeautifulSoup, Selenium。
+- 📂 **`05_practical`** (实战项目): 综合性的小工具或应用。
 
 ## 2. 内容生成规范 (Content Guidelines) - **核心要求**
 
@@ -49,7 +49,7 @@ description: '辅助 Python 学习项目，管理各个模块（基础、进阶�
 
 当用户说“我想学习 [主题]”时：
 
-1.  **定位**: 确定属于哪个模块（`base`/`advanced` 等）。
+1.  **定位**: 确定属于哪个模块（`01_base`/`02_advanced` 等）。
 2.  **检查**: 查看当前目录下的文件序号（如 `11_loops.py`），新文件顺延为 `12_[topic].py`。
 3.  **编写代码**: 创建 Python 学习脚本，包含详细注释。
 4.  **生成图解**: (如果概念抽象) 编写/更新绘图脚本并生成图片。
